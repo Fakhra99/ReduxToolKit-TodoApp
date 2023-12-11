@@ -1,21 +1,21 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import ReactDOM from 'react-dom';
 import App from './App';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
-import userReducer from './components/userReducer';
+import todoReducer from './components/todoReducer'; 
 
-const store=configureStore({
-  reducer:{
-    users:userReducer
-  }
-})
+const store = configureStore({
+  reducer: {
+    todos: todoReducer, 
+  },
+});
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
+ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-    <App />
+      <App />
     </Provider>
-  </React.StrictMode>
+  </React.StrictMode>,
+  document.getElementById('root')
 );

@@ -1,64 +1,49 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { updateUser } from './userReducer';
+import { updateTodo } from './todoReducer';
 
 const Update = () => {
   const { id } = useParams();
-  const users = useSelector((state) => state.users);
-  const existingUser = users.find((user) => user.id === parseInt(id, 10));
-  
-  const { name: existingName, email: existingEmail } = existingUser || {};
-  
-  const [updatename, setName] = useState(existingName || '');
-  const [updateemail, setEmail] = useState(existingEmail || '');
+  const todos = useSelector((state) => state.todos);
+  const existingTodo = todos.find((todo) => todo.id === parseInt(id, 10));
+
+  const { todo: existingTodoText } = existingTodo || {};
+
+  const [updateTodoText, setTodoText] = useState(existingTodoText || '');
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleUpdate = (event) => {
     event.preventDefault();
-    dispatch(updateUser({
+    dispatch(updateTodo({
       id: parseInt(id, 10),
-      name: updatename,
-      email: updateemail
+      todo: updateTodoText,
     }));
     navigate("/");
   };
 
-  
   useEffect(() => {
-  setName(existingName || '');
-  setEmail(existingEmail || '');
-}, [existingUser, existingName, existingEmail]);
-
+    setTodoText(existingTodoText || '');
+  }, [existingTodo, existingTodoText]);
 
   return (
     <div className='d-flex w-100 vh-100 justify-content-center align-items-center'>
       <div className='w-50 border bg-secondary text-white p-5'>
         <form onSubmit={handleUpdate}>
           <div>
-            <h3>Edit user</h3>
-            <label htmlFor="name">Name:</label>
+            <h3>Edit todo</h3>
+            <label htmlFor="todo">Todo:</label>
             <input
               type="text"
-              name='name'
+              name='todo'
               className='form-control'
-              value={updatename}
-              onChange={(e) => setName(e.target.value)}
+              value={updateTodoText}
+              onChange={(e) => setTodoText(e.target.value)}
             />
           </div>
 
-          <div>
-            <label htmlFor="email">Email:</label>
-            <input
-              type="email"
-              name='email'
-              className='form-control'
-              value={updateemail}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
           <br />
           <button className='btn btn-info'>Update</button>
         </form>
